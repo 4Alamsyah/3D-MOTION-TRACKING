@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Motion Capture 3D</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; height: 100%; overflow: hidden; background: #020208; }
+        canvas { display: block; width: 100% !important; height: 100% !important; }
+
+        #ui {
+            position: fixed; inset: 0; pointer-events: none; z-index: 10;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        #status {
+            position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
+            padding: 10px 24px;
+            background: rgba(2, 5, 20, 0.8);
+            border: 1px solid #00ffff33;
+            border-radius: 999px;
+            color: #aabbcc;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(12px);
+            white-space: nowrap;
+            transition: color .4s, border-color .4s;
+        }
+        #status.ok    { color: #00ff99; border-color: #00ff9944; }
+        #status.error { color: #ff5555; border-color: #ff555544; }
+        #status.warn  { color: #ffaa44; border-color: #ffaa4444; }
+
+        #dot {
+            display: inline-block; width: 8px; height: 8px;
+            border-radius: 50%; background: currentColor;
+            margin-right: 8px; vertical-align: middle;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.7)} }
+
+        #fps {
+            position: absolute; top: 24px; right: 24px;
+            color: #1a3355; font-family: monospace; font-size: 12px;
+        }
+
+        #hint {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            color: #1a2d44; font-size: 11px; letter-spacing: .5px;
+        }
+
+        #title {
+            position: absolute; top: 72px; left: 50%; transform: translateX(-50%);
+            color: #0d2040; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+        }
+
+        #waiting {
+            position: fixed; inset: 0; display: flex;
+            align-items: center; justify-content: center;
+            flex-direction: column; gap: 16px; pointer-events: none;
+        }
+        #waiting .ring {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 1px solid transparent;
+            border-top-color: #00ffff18;
+            border-right-color: #00ffff30;
+            animation: spin 2.5s linear infinite;
+        }
+        #waiting .ring2 {
+            width: 70px; height: 70px; border-radius: 50%;
+            border: 1px solid transparent;
+            border-bottom-color: #8844ff18;
+            border-left-color: #8844ff30;
+            animation: spin 1.8s linear infinite reverse;
+            margin-top: -86px;
+        }
+        #waiting p { color: #1a2d44; font-size: 12px; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #waiting.hidden { display: none; }
+    </style>
+</head>
+<body>
+    <canvas id="c"></canvas>
+
+    <div id="ui">
+        <div id="status"><span id="dot"></span><span id="msg">Menghubungkan ke server Python...</span></div>
+        <div id="title">Motion Capture 3D · Three.js + MediaPipe</div>
+        <div id="fps">-- fps</div>
+        <div id="hint">Drag: putar kamera &nbsp;·&nbsp; Scroll: zoom &nbsp;·&nbsp; Klik kanan: geser</div>
+    </div>
+
+    <div id="waiting">
+        <div class="ring"></div>
+        <div class="ring2"></div>
+        <p>Menunggu pose terdeteksi...</p>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

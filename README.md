@@ -336,8 +336,6 @@ Created with ❤️ for **Motion Capture enthusiasts**
 
 ## 🎬 Demo / Screenshots
 
-_(Tambahkan screenshot skeleton 3D kalau sudah jalan)_
-
 **Status:** ✅ Working  
 **Last Updated:** 2026-06-28
 
